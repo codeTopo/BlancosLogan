@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "https://api.tau.com.mx",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "/dipomex/v1/codigo_postal"
+    }
+  }
+}

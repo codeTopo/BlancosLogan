@@ -1,0 +1,76 @@
+<div class="contenedor">
+  <div class="header">
+    <p-button  icon="pi pi-home"[text]="true" [raised]="true" [rounded]="true" severity="contrast" size="large" (click)="goHome()"/>
+    <div class="center-content">
+      <img class="header-img" src="https://i.ibb.co/BsmGhbf/Blancos-logan.jpg" alt="Imagen desde Google Drive">
+      <span class="header-text">Lista de Productos</span>
+    </div>
+    <div class="right-buttons">
+      <p-button icon="pi pi-cart-minus" label="Carrito" [raised]="true" [rounded]="true" (click)="goVenta()" severity="warning" outlined="true">
+        <span class="bag">{{ bagCount }}</span>
+      </p-button>
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input type="text" pInputText placeholder="Search"  [formControl]="searchControl" />
+      </p-iconField>
+    </div>
+    <p-toast></p-toast>
+  </div>
+
+  <!-- Aquí comienza el Body -->
+  <div class="body">
+    <cdk-virtual-scroll-viewport itemSize="35" class="viewport" >
+      <div *ngIf="loading" class="loading-container">
+        <p-progressSpinner></p-progressSpinner>
+        <p>Cargando...</p>
+      </div>
+      <div *ngIf="error" class="error-container">
+        <p>Ocurrió un error al cargar los productos.</p>
+        <button pButton type="button" label="Reintentar" icon="pi pi-refresh" (click)="fetchProductos()"></button>
+      </div>
+      <div class="product-grid" *ngIf="!loading && !error">
+        <div class="card-container" *cdkVirtualFor="let product of filteredProducts">
+          <div class="card flex justify-content-center" >
+            <p-card header="{{product.nombre}}">
+              <ng-template pTemplate="header">
+                <img alt="Card" src="{{product.ubicacion}}" />
+              </ng-template>
+              <p>
+                {{product.descripcion}}
+              </p>
+              <ng-template pTemplate="footer">
+                <div class="footer-content">
+                  <div class="product-price">${{product.precio}}</div>
+                  <p-button icon="pi pi-shopping-bag" severity="warning" [raised]="true" [rounded]="true" class="save-button" (click)="showDialog(product)"/>
+                </div>
+              </ng-template>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+  </div>
+
+  <!--Aqui el cuadro de dialog-->
+  <p-dialog header="Detalles del Producto" [(visible)]="displayDialog" modal="modal"  [style]="{ width: '25vw' }"  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" class="custom-dialog">
+    <div *ngIf="selectedProduct">
+      <img [src]="selectedProduct.ubicacion" alt="Producto" style="width: 100%;" />
+      <h3>{{ selectedProduct.nombre }}</h3>
+      <p><strong>Precio:</strong> ${{ selectedProduct.precio }}</p>
+      <div class="input-container">
+        <p-button (click)="decrement()" [raised]="true" [rounded]="true"  severity="danger" outlined="true">-</p-button>
+        <span class="quantity">{{ counter }}</span>
+        <p-button (click)="increment()" [raised]="true" [rounded]="true"  severity="success" outlined="true">+</p-button>
+      </div>
+    </div>
+    <p-footer>
+      <div class="dialog-footer">
+        <strong>Total: ${{ calculateTotal() }}</strong>
+        <p-button icon="pi pi-shopping-bag" severity="success" [rounded]="true" [raised]="true" label="Agregar" (click)="addToCart()"></p-button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <router-outlet></router-outlet>
+</div>

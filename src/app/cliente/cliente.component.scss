@@ -1,0 +1,137 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
+  background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
+}
+
+.flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
+}
+
+input {
+  margin-right: 10px;
+}
+
+.address-list {
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-size: 14px; /* Ajusta el tamaño de la fuente */
+    line-height: 1.5; /* Ajusta el espacio entre líneas */
+    margin-bottom: 5px; /* Espacio entre los elementos de la lista */
+    font-weight: bold; /* Poner en negrita */
+
+    &:last-child {
+      margin-bottom: 0; /* Elimina el margen inferior del último elemento */
+    }
+  }
+}
+
+p {
+  font-weight: bold; /* Poner en negrita */
+  color: #666; /* Color del texto gris */
+}
+
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section {
+  display: flex;
+  gap: 1rem;
+}
+
+.field-container {
+  flex: 1;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+}
+
+//de aqui para el dialog
+
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .section {
+    padding: 1rem;
+    box-sizing: border-box;
+
+    &.section1 {
+      // Estilos para la primera sección
+      background-color: #f9f9f9;
+    }
+
+    &.section2 {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      background-color: #fff;
+    }
+
+    &.section3 {
+      // Estilos para la tercera sección
+      background-color: #f9f9f9;
+    }
+  }
+
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem; // Ajusta el espacio entre los items según necesites
+  }
+
+  .flex-item {
+    flex: 1;
+    // Ajusta el ancho mínimo si es necesario
+    min-width: 0;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    small {
+      display: block;
+      margin-top: 0.25rem;
+      color: #6c757d; // Ajusta el color del texto de ayuda si es necesario
+    }
+  }
+}
+
+

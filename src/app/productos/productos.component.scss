@@ -1,0 +1,156 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Evita el scroll de la página */
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  border-radius: 10px;
+
+  .header {
+    flex: 0 0 50px; /* Cambia la altura del header aquí */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Box-shadow alrededor del contenedor */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-bottom: 5px;
+  }
+
+  .header-img {
+    height: 80px; // Ajusta la altura de la imagen según sea necesario
+    width: auto; // Mantiene la proporción de la imagen
+    margin-right: 10px; // Espacio entre la imagen y el texto
+    display: block; // Asegura que la imagen no tenga espacio debajo
+    margin: 8px;
+  }
+
+  .center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1; // Ocupa el espacio restante en el centro
+
+    .header-text {
+      text-align: center;
+      font-size: 35px;
+    }
+  }
+
+  .right-buttons {
+    display: flex;
+    align-items: center;
+    margin: 16px;
+
+    p-iconField {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+    }
+
+    p-button {
+      margin-right: 10px;
+    }
+  }
+  .body {
+    flex: 1; /* Esta sección ocupa el espacio restante */
+    padding: 10px; /* Añade padding alrededor del contenido */
+    background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
+
+    .loading-container,
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .viewport {
+      width: 100%;
+      height: 100%;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 8px; /* Ajusta el espacio entre las celdas */
+      width: 100%;
+      height: 100%;
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      width: 350px;
+      height: 440px;
+      margin-left: 8px;
+      margin-right: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card {
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Añade sombra a la tarjeta */
+      border-radius: 10px; /* Bordes redondeados */
+      transition: transform 0.2s; /* Transición para hover */
+      background-color: transparent;
+      &:hover {
+        transform: scale(1.05); /* Efecto hover */
+      }
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .product-price {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .save-button {
+      width: auto;
+    }
+
+  }
+
+
+  .dialog-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+
+    .quantity {
+      margin: 0 1rem; // Ajusta el margen según sea necesario
+      font-size: 1.2rem; // Ajusta el tamaño de fuente según sea necesario
+      display: inline-block;
+      width: 2rem; // Ajusta el ancho según sea necesario
+      text-align: center;
+    }
+
+    p-button {
+      margin: 0 0.5rem; // Ajusta el margen según sea necesario
+    }
+  }
+
+
+}
+
+

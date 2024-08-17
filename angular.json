@@ -30,22 +30,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -56,7 +54,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "optimization": false,
+              "optimization": true,
               "extractLicenses": false,
               "sourceMap": true
             }
@@ -70,7 +68,8 @@
               "buildTarget": "BlancosLogan:build:production"
             },
             "development": {
-              "buildTarget": "BlancosLogan:build:development"
+              "buildTarget": "BlancosLogan:build:development",
+               "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -102,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1973d8e4-1226-4dcf-826c-25c9371963de"
   }
 }

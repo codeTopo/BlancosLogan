@@ -1,0 +1,133 @@
+<div class="contenedor">
+  <div class="header">
+    <div class="center-content">
+      <img class="header-img" src="https://i.ibb.co/BsmGhbf/Blancos-logan.jpg" alt="Imagen desde Google Drive">
+      <span class="header-text">Blancos Logan</span>
+      <p-toast></p-toast>
+    </div>
+
+    <div class="right-buttons">
+      <p-button class="right-btn" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="showDialog()">Iniciar Sesion</p-button>
+      <p-button class="right-btn" [raised]="true" [rounded]="true" [outlined]="true" severity="danger" (click)="clearToken()">Cerrar Cesion</p-button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="column column1">Columna 1</div>
+    <!--Para la navegacion-->
+    <div class="column column2">
+      <div class="column2-content">
+        <p-button class="link-btn" icon="pi pi-list" label="Productos" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="goToProductos()"/>
+        <p-button class="link-btn" icon="pi pi-whatsapp" label="Requieres ayuda" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="openWhatsApp()"/>
+        <p-button class="link-btn" [raised]="true" [rounded]="true" [outlined]="true" severity="help">Botón 3</p-button>
+      </div>
+    </div>
+    <!--terminos y condiciones-->
+    <div class="column column3">
+      <p-scrollPanel [style]="{ width: '450px', height: '350px' }">
+        <p><strong>Términos, Condiciones y Garantías</strong></p>
+
+        <p>Bienvenido a Blancos Logan. Al acceder y utilizar nuestra página web, usted acepta estar sujeto a los términos y condiciones descritos en este documento. Nos reservamos el derecho de modificar estos términos en cualquier momento, por lo que le recomendamos revisarlos periódicamente.</p>
+
+        <p><strong>2. Política de No Devoluciones</strong></p>
+        <p>En Blancos Logan, todos los productos ofrecidos en nuestra página web cuentan con descripciones detalladas y toda la información necesaria para su compra. Debido a esto, no aceptamos devoluciones de productos adquiridos a través de nuestra plataforma.</p>
+
+        <p><strong>3. Precios y Cambios</strong></p>
+        <p>Nuestros precios no son fijos y están sujetos a cambios. Los precios se actualizan diariamente a las 12:00 p.m. (hora de Jalisco, México). Blancos Logan se reserva el derecho de modificar los precios sin previo aviso. Le recomendamos que verifique los precios actuales antes de realizar su compra.</p>
+
+        <p><strong>4. Seguridad de la Información</strong></p>
+        <p>En Blancos Logan, la seguridad de sus datos es una prioridad. Toda la información relacionada con su cuenta será eliminada de nuestros sistemas cada 30 días naturales. Los datos personales serán eliminados cada 90 días naturales. Cumplimos con las leyes digitales de protección de información sensible; sin embargo, no nos hacemos responsables por el uso indebido que el usuario pueda hacer de dicha información.</p>
+
+        <p><strong>5. Uso de la Información por Autoridades</strong></p>
+        <p>Nuestros datos están a disposición de las autoridades correspondientes en caso de ser requeridos. Para garantizar la seguridad y privacidad de nuestros usuarios, estos datos no serán mostrados públicamente en nuestra página web.</p>
+
+        <p><strong>6. Cláusula de Garantía y Responsabilidad en el Envío</strong></p>
+        <ul>
+            <li><strong>6.1. Responsabilidad en la Entrega</strong></li>
+            <ul>
+                <li>En Blancos Logan, hacemos todo lo posible para asegurarnos de que su pedido llegue en las mejores condiciones y en el tiempo estipulado. Sin embargo, los servicios de paquetería son proporcionados por terceros, por lo que no podemos asumir la responsabilidad directa en caso de pérdida o daño de los paquetes durante el tránsito.</li>
+                <li>En caso de pérdida del paquete, nos comprometemos a colaborar con usted y con la empresa de paquetería para resolver el problema. No obstante, las acciones que podamos tomar estarán sujetas a las indicaciones y procedimientos establecidos por la empresa de paquetería. Trabajaremos estrechamente con ellos hasta que nos informen cómo proceder.</li>
+            </ul>
+
+            <li><strong>6.2. Reporte de Pedidos Incompletos</strong></li>
+            <ul>
+                <li>Si su pedido llega incompleto, deberá presentar un reporte de pedido incompleto dentro de las primeras 48 horas posteriores a la recepción del paquete. El reporte debe incluir:</li>
+                <ul>
+                    <li><strong>Número de Venta:</strong> El número de venta proporcionado en su confirmación de compra.</li>
+                    <li><strong>Queja Escrita:</strong> Una descripción clara y detallada de los faltantes en su pedido.</li>
+                    <li><strong>Evidencia en Video:</strong> Un video sin interrupciones donde se muestre la apertura del paquete desde su llegada hasta que la bolsa esté completamente vacía. Este video es esencial para garantizar que no haya habido modificaciones en el contenido del pedido. Si se detectan interrupciones o ediciones en el video, la garantía quedará anulada automáticamente.</li>
+                </ul>
+            </ul>
+
+            <li><strong>6.3. Mercancía Dañada</strong></li>
+            <ul>
+                <li>Si el paquete no presenta daños visibles pero la mercancía dentro está dañada, deberá seguir los mismos pasos que para reportar un pedido incompleto, adjuntando el video de apertura sin interrupciones. Si el reclamo es válido, se ofrecerá una bonificación para su próximo pedido, que puede variar dependiendo del daño. Esta bonificación será aplicable exclusivamente a futuras compras y no se permitirá la devolución de la mercancía dañada ni se emitirán reembolsos.</li>
+            </ul>
+
+            <li><strong>6.4. Procedimiento de Saldo a Favor</strong></li>
+            <ul>
+                <li>Blancos Logan evaluará cada caso de manera individual y, si corresponde, se procederá un saldo a favor del cliente para futuras compras.</li>
+                <li>En todos los casos, el cliente será informado del estado de su saldo a favor y de los pasos a seguir durante todo el proceso.</li>
+            </ul>
+
+            <li><strong>6.5. Selección de Paquetería</strong></li>
+            <ul>
+                <li>Los datos proporcionados por el cliente, como código postal, colonia, número de domicilio y demás detalles, serán utilizados como información de referencia para seleccionar la empresa de paquetería que mejor se adapte a sus necesidades. Esta selección se realiza con el objetivo de garantizar la entrega más eficiente y segura posible. No obstante, Blancos Logan no puede garantizar que la paquetería seleccionada sea siempre la más económica o rápida, ya que la disponibilidad de servicios puede variar según la ubicación y otras condiciones logísticas.</li>
+            </ul>
+        </ul>
+
+        <p><strong>7. Modificaciones de los Términos y Condiciones</strong></p>
+        <p>Blancos Logan se reserva el derecho de modificar estos términos y condiciones en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en nuestra página web. Es responsabilidad del usuario revisar periódicamente estos términos para estar al tanto de las actualizaciones.</p>
+
+        <p><strong>8. Aceptación de los Términos</strong></p>
+        <p>Al realizar una compra en Blancos Logan, el cliente acepta de manera expresa estos Términos y Condiciones, incluyendo las políticas de no devoluciones, manejo de datos, y responsabilidad en el envío.</p>
+
+        <p><strong>9. Contacto</strong></p>
+        <p>Para cualquier duda o reclamación, puede contactar a nuestro equipo de atención al cliente a través de los medios proporcionados en nuestra página web.</p>
+
+        <p><strong>10. Modificación de Pedidos y Proceso de Pago</strong></p>
+        <ul>
+            <li><strong>10.1. Modificación de Pedidos</strong></li>
+            <ul>
+                <li>Una vez que se ha emitido un pedido a través de nuestra plataforma, los clientes tienen la opción de modificar su pedido, ya sea para agregar o eliminar artículos. Para realizar estas modificaciones, se establece un anticipo de $1600 MXN, el cual cubre únicamente los artículos solicitados y no el costo total del envío, ya que este puede variar dependiendo de la localidad del cliente.</li>
+            </ul>
+
+            <li><strong>10.2. Plazo para Finalizar el Proceso de Compra</strong></li>
+            <ul>
+                <li>El cliente tiene un plazo de 2 días hábiles a partir de la emisión del pedido para completar el proceso de compra, que incluye la verificación de artículos agregados o eliminados y la selección de la paquetería. Si el cliente no finaliza el proceso dentro de este período, no se realizará reembolso del anticipo y se aplicará una multa de $600 MXN. Esta multa se impone debido al abarrotamiento de paquetes pendientes. En caso de exceder el plazo, el cliente solo podrá reclamar el saldo restante después de la aplicación de la multa.</li>
+            </ul>
+
+            <li><strong>10.3. Pago Total y Generación de Guía de Paquetería</strong></li>
+            <ul>
+                <li>Una vez que el proceso de compra esté completo, incluyendo el pago total y la selección de paquetería, se entregará al cliente una copia de la guía de paquetería. Esto permitirá al cliente rastrear y verificar el estado de su paquete durante el envío.</li>
+            </ul>
+        </ul>
+
+        <p><strong>Atentamente,</strong> Blancos Logan</p>
+    </p-scrollPanel>
+
+    </div>
+    <!--liga de los clientes-->
+    <div class="column column4">
+      <app-cliente></app-cliente>
+    </div>
+    <div class="column column5">Columna 3, Fila 2</div>
+    <div class="column column6">Columna 3, Fila 3</div>
+  </div>
+</div>
+
+<p-dialog header="Iniciar Sesion" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="Email" class="font-semibold w-6rem">Email</label>
+    <input pInputText id="Email" type="text" [(ngModel)]="Email" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex align-items-center gap-3 mb-5">
+    <label for="Password" class="font-semibold w-6rem">Password</label>
+    <input pInputText id="Password" type="Password" [(ngModel)]="Password" class="flex-auto" autocomplete="off" />
+  </div>
+  <p-progressBar mode="indeterminate" *ngIf="loading" [style]="{'height': '6px'}" />
+  <div class="flex justify-content-end gap-2">
+    <p-button label="Login" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (onClick)="login()" />
+  </div>
+</p-dialog>
+
+<router-outlet></router-outlet>

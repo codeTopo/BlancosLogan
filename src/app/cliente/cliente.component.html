@@ -1,0 +1,196 @@
+<p-splitter [style]="{ height: '350px' }" [panelSizes]="[20, 80]" [minSizes]="[10, 0]" styleClass="mb-5">
+  <ng-template pTemplate>
+    <p-splitter layout="vertical" [panelSizes]="[15, 85]">
+      <ng-template pTemplate>
+        <div style="flex-grow: 1;" class="flex align-items-center justify-content-center">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+            <input type="text"  maxlength="10" pattern="[0-9]" [(ngModel)]="telefono" pInputText placeholder="Buscar Datos">
+          </p-iconField>
+          <p-button label="Buscar Datos"
+                    icon="pi pi-check"
+                    [loading]="loading"
+                    (click)="getCliente(); getDireccion()"
+                    [raised]="true"
+                    [rounded]="true"
+                    severity="info"
+                    [outlined]="true"
+                    [disabled]="!isTelefonoValid"
+                    />
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <p-splitter [panelSizes]="[50, 50]">
+          <ng-template pTemplate>
+            <div class="col flex align-items-center justify-content-center">
+              <ng-container *ngIf="cliente; else noCliente">
+                <ul class="address-list">
+                  <li>Id Cliente: {{cliente.idCliente}}</li>
+                  <li>Nombre: {{cliente.nombre}}</li>
+                  <li>Apellido: {{cliente.apellidos}}</li>
+                  <li>Telefono: {{cliente.telefono}}</li>
+                </ul>
+              </ng-container>
+              <ng-template #noCliente>
+                <p>Sin datos buscados. Favor de ingresar un teléfono para buscar tus datos.</p>
+              </ng-template>
+            </div>
+          </ng-template>
+          <ng-template pTemplate>
+            <div class="col flex align-items-center justify-content-center">
+              <ng-container *ngIf="direc; else noDireccion">
+                <ul class="address-list">
+                  <li>Calle: {{direc.calle}}</li>
+                  <li>Colonia: {{direc.colonia}}</li>
+                  <li>Municipio: {{direc.municipio}}</li>
+                  <li>Número: {{direc.numero}}</li>
+                  <li>Estado: {{direc.estado}}</li>
+                  <li>CP: {{direc.cp}}</li>
+                </ul>
+              </ng-container>
+              <ng-template #noDireccion>
+                <p>Puedes Llenar tus datos aqui</p>
+                <p-button [raised]="true" [rounded]="true" [outlined]="true" severity="warning" (click)="showDialog()" label="Mandar Datos"/>
+              </ng-template>
+            </div>
+          </ng-template>
+        </p-splitter>
+      </ng-template>
+    </p-splitter>
+  </ng-template>
+</p-splitter>
+<p-toast></p-toast>
+
+<p-dialog header="Registro de Datos" *ngIf="nuevoCliente" [modal]="true" [(visible)]="visible" [style]="{ minWidth: '50vw', maxWidth: '90vw', borderRadius: '10px' }" [baseZIndex]="10000" [appendTo]="'body'">
+  <div class="dialog-content">
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Cargando...</p>
+    </div>
+    <div class="section">
+      <!--datos del Cliente -->
+      <div class="flex-container">
+        <div class="flex-item">
+          <label for="username1">Nombre</label>
+          <input
+              pInputText
+              id="username1"
+              [disabled]="nombreDisabled"
+              aria-describedby="username-help1"
+              [(ngModel)]="nuevoCliente.nombre"
+              placeholder="Nombre de Cliente"/>
+        </div>
+        <div class="flex-item">
+          <label for="Apellidos">Apellidos</label>
+          <input
+              pInputText
+              id="username2"
+              [disabled]="apellidosDisabled"
+              aria-describedby="Apellidos"
+              [(ngModel)]="nuevoCliente.apellidos"
+              placeholder="Apellidos"/>
+        </div>
+        <div class="flex-item">
+          <label for="telefono">Teléfono</label>
+          <input
+              pInputText
+              id="telefono"
+              aria-describedby="telefono-help"
+              [(ngModel)]="telefono"
+              (ngModelChange)="validateTelefono()"
+              maxlength="10"
+              placeholder="395-118-5963"/>
+          <small id="telefono-help" *ngIf="telefonoError">
+              El teléfono debe contener exactamente 10 dígitos.
+          </small>
+        </div>
+      </div>
+    </div>
+    <!--Direccion del cliente-->
+    <div class="section section2">
+      <div class="flex-container">
+        <div class="flex-item">
+          <label for="codigoPostal">Código Postal</label>
+          <input
+              pInputText
+              id="codigoPostal"
+              aria-describedby="Codigo Postal"
+              [(ngModel)]="nuevaDireccion.cp"
+              (ngModelChange)="onCpChange()"
+              placeholder="Código Postal"
+              maxlength="5"/>
+        </div>
+        <div class="flex-item">
+          <label for="estado">Estado</label>
+          <input
+              pInputText
+              id="estado"
+              [disabled]="!cpInfo"
+              aria-describedby="Estado"
+              [(ngModel)]="nuevaDireccion.estado"
+              placeholder="Estado"/>
+        </div>
+        <div class="flex-item">
+          <label for="municipio">Municipio</label>
+          <input
+              pInputText
+              id="municipio"
+              [disabled]="!cpInfo"
+              aria-describedby="Municipio"
+              [(ngModel)]="nuevaDireccion.municipio"
+              placeholder="Municipio"/>
+        </div>
+        <div class="flex-item">
+          <label for="colonia">Colonia</label>
+          <p-dropdown
+          [options]="coloniasDisponibles"
+          [(ngModel)]="coloniaSeleccionada"
+          placeholder="Selecciona una colonia"
+          [disabled]="!cpInfo || coloniasDisponibles.length === 0"
+          (onChange)="nuevaDireccion.colonia = coloniaSeleccionada"
+          *ngIf="coloniasDisponibles.length > 0">
+        </p-dropdown>
+        </div>
+        <div class="flex-item">
+          <label for="calle">Calle</label>
+          <input
+              pInputText
+              id="calle"
+              [disabled]="!cpInfo"
+              aria-describedby="Calle"
+              [(ngModel)]="nuevaDireccion.calle"
+              placeholder="Calle"/>
+        </div>
+        <div class="flex-item">
+          <label for="numero">Número</label>
+          <input
+              pInputText
+              id="numero"
+              [disabled]="!cpInfo"
+              aria-describedby="Número"
+              [(ngModel)]="nuevaDireccion.numero"
+              placeholder="Número"/>
+        </div>
+      </div>
+    </div>
+    <div class="section section3">
+      <div class="flex-container">
+        <div class="flex-item flex-grow-1">
+          <p-button label="Agregar Datos"
+                    icon="pi pi-user-plus"
+                    (click)="agregarCliente(nuevoCliente); addDireccion(nuevaDireccion)"
+                    [disabled]="!isFormValid() || loading"
+                    [loading]="loading"
+                    [raised]="true" [rounded]="true" severity="info"
+                    class="p-button-success" />
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+
+
+
+
+

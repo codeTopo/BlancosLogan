@@ -1,0 +1,78 @@
+<router-outlet></router-outlet>
+
+<div class="contenedor">
+  <div class="header">
+    <p-button icon="pi pi-home" [text]="true" [raised]="true" [rounded]="true" severity="contrast" size="large" (click)="goHome()"></p-button>
+    <div class="center-content">
+      <img class="header-img" src="https://i.ibb.co/BsmGhbf/Blancos-logan.jpg" alt="Imagen desde Google Drive">
+      <span class="header-text">Lista de Productos</span>
+    </div>
+
+    <div class="right-buttons">
+      <p-button label="Productos" icon="pi pi-list"  [raised]="true" [rounded]="true" severity="info" outlined="true" (click)="goProduc()"></p-button>
+      <p-button label="Realizar pago" icon="pi pi-tags"  [disabled]="ventaDisabled" [raised]="true" [rounded]="true" severity="warning" outlined="true" (click)="agregarVenta()"></p-button>
+    </div>
+    <p-toast></p-toast>
+  </div>
+
+  <!-- Aquí comienza el Body -->
+  <div class="body">
+    <p-table [value]="concepto" [tableStyle]="{'min-width': 'full'}">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          Carrito De Compras
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Imagen</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{product.nombre}}</td>
+          <td>
+            <img [src]="product.ubicacion" [alt]="product.nombre" width="100" class="shadow-4" />
+          </td>
+          <td>{{product.precio | currency:'MXN'}}</td>
+          <td>{{product.cantidad}}</td>
+          <td>{{product.precio * product.cantidad | currency:'MXN'}}</td>
+          <td>
+            <p-button label="Eliminar" icon="pi pi-trash" [raised]="true" [rounded]="true" severity="danger" outlined="true" (click)="eliminarProducto(product.idProducto)"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="summary-container">
+          <div class="total-amount">
+            Total A Pagar: {{ totalAmount | currency:'MXN' }}
+          </div>
+          <div class="product-count">
+            In total there are {{ concepto ? concepto.length : 0 }} products.
+          </div>
+        </div>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <p-dialog header="¡Gracias por tu compra!" [modal]="true" [(visible)]="displayDialog" [style]="{ width: '30rem' }">
+    <p>
+     El ID de tu venta es: <strong>{{ ventaId }}</strong>
+    </p>
+    <p-divider/>
+    <p>
+      Recuerde que este numero de venta es muy importante dado que el vendedor se lo pedira para referencia de su pedido
+    </p>
+    <p-divider/>
+      <P>Desea mandar su numero de venta por mensaje?
+      </P>
+    <p-divider/>
+    <p-button  icon="pi pi-whatsapp"  [text]="true" severity="success" (click)="openWhatsApp()"/>
+  </p-dialog>
+</div>
