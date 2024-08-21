@@ -6,7 +6,7 @@ import { ClienteRequest } from './ClienteRequest';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { Direccion } from './Direccion';
+import { Direccion, DireccionResponse } from './Direccion';
 import { SplitterModule } from 'primeng/splitter';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -17,6 +17,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CpResponse } from './CodigoPostal';
 import { DropdownModule } from 'primeng/dropdown';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-cliente',
@@ -41,15 +42,17 @@ import { DropdownModule } from 'primeng/dropdown';
 })
 export default class ClienteComponent implements OnInit {
 
-  // Propiedades para cliente y dirección
+  // Propiedades para cliente y dirección en get
+  telefono: string = '';
   cliente: ClienteRequest | null = null;
+  direc: Direccion | null = null;
+  //modelos para post
   nuevoCliente: ClienteRequest = {
     idCliente: 0,
     nombre: '',
     apellidos: '',
     telefono: ''
   };
-  direc: Direccion | null = null;
   nuevaDireccion: Direccion = {
     idDireccion: 0,
     calle: '',
@@ -60,6 +63,18 @@ export default class ClienteComponent implements OnInit {
     cp: '',
     telefono: ''
   };
+
+
+  //disables Cliente y direccion
+  telefonoPost: string = '';
+  telefonoError: boolean = false;
+  nombreDisabled: boolean = true;
+  apellidosDisabled: boolean = true;
+  codigopostalDisabled:boolean=true;
+  telefonoDisabled: boolean = false;
+
+
+
   // Para el código postal
   cpInfo: CpResponse | null = null;
   coloniasDisponibles: string[] = [];
@@ -68,88 +83,88 @@ export default class ClienteComponent implements OnInit {
   // Herramientas para el html
   visible: boolean = false;
   loading: boolean = false;
-  clienteExistente: boolean = false;
-  direccionExistente: boolean = false;
+  visibleEdit:boolean=false;
+
+
   load() {
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
-    }, 2000);
-  }
+    }, 4000);
+  };
+  //funciones para los dialgos y mensajes
   showDialog() {
     this.visible = true;
   };
-  isFormValid(): boolean {
-    const cliente = this.nuevoCliente;
-    const direccion = this.nuevaDireccion;
-    // Verificar que los campos no estén vacíos (''), null o undefined.
-    const isClienteValid = !!(cliente.nombre && cliente.apellidos && cliente.telefono);
-    const isDireccionValid = !!(direccion.calle && direccion.numero && direccion.colonia && direccion.cp && direccion.estado && direccion.telefono);
-    return isClienteValid && isDireccionValid;
-  }
-
-
-
-  telefonoError = false;
-  nombreDisabled = true;
-  apellidosDisabled = true;
-
-  get telefono(): string {
-    return this.nuevoCliente.telefono;
-  }
-  set telefono(value: string) {
-    this.nuevoCliente.telefono = value;
-    this.nuevaDireccion.telefono = value;
-  }
-  validateTelefono() {
-    const telefonoLength = this.telefono.length || 0;
-    this.telefonoError = telefonoLength !== 10;
-
-    if (telefonoLength === 10) {
-      this.checkTelefono();
-    }
-  }
-  checkTelefono() {
-    this.clienteService.getCliente(this.telefono).subscribe({
-      next: (res) => {
-        this.loading = true;
-        if (res.exito === 1) {
-          this.loading = false;
-          this.showMessage('error', 'Número Registrado', 'Este número ya fue registrado, si crees que es un error favor de comunicarte al 3951185963.');
-          this.visible = false; // Cerrar el diálogo
-
-        } else if (res.exito === 0) {
-          this.nombreDisabled = false;
-          this.apellidosDisabled = false;
-          this.loading = false;
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        this.showMessage('error', 'Error', 'Hubo un problema al verificar el número de teléfono.');
-      }
-    });
-  }
-
-
-  constructor(
-    private clienteService: ClienteService,
-    private messages: MessageService,
-  ) { }
-
-  ngOnInit(): void { }
-
-  // Herramientas de las solicitudes
-  get isTelefonoValid(): boolean {
-    return this.telefono.length === 10 && /^[0-9]+$/.test(this.telefono);
+  showDialogP(){
+    this.visibleEdit = true;
   }
   private showMessage(severity: string, summary: string, detail: string): void {
     this.messages.clear();
     this.messages.add({ severity, summary, detail });
   }
 
+  constructor(
+    private clienteService: ClienteService,
+    private messages: MessageService,
+  ) { }
+
+
+
+  ngOnInit(): void { }
+
+  // Herramientas para el telefono
+  get isTelefonoValid(): boolean {
+    const telefono = this.nuevoCliente.telefono;
+    return telefono.length === 10 && /^[0-9]+$/.test(telefono);
+  }
+  //herramienta para editar
+  get telefonoValid():boolean{
+    const telefono = this.telefono
+    return telefono.length === 10 && /^[0-9]+$/.test(telefono);
+  }
+    //funcion para validar el telefono
+  validateTelefono(): void {
+    const telefono = this.nuevoCliente.telefono;
+    // Verifica si el número tiene exactamente 10 dígitos antes de proceder
+    if (telefono.length === 10 && this.isTelefonoValid) {
+      this.loading = true;
+      this.telefonoError = false;
+      this.telefonoDisabled = false;
+      this.clienteService.getCliente(telefono).subscribe({
+        next: (res) => {
+          this.loading = false;
+          if (res.exito === 1) {
+            console.log('El número ya existe en la base de datos');
+            this.nombreDisabled = true;
+            this.apellidosDisabled = true;
+            this.telefonoDisabled = true;
+            this.showMessage('error', 'Número Registrado', 'Este número ya fue registrado, si crees que es un error favor de comunicarte al 3951185963.');
+            this.visible = false;
+          } else if (res.exito === 0) {
+            this.nombreDisabled = false;
+            this.apellidosDisabled = false;
+            this.codigopostalDisabled =false;
+            this.telefonoDisabled = true;
+          };
+        },
+        error: (error: HttpErrorResponse) => {
+          this.loading = false;
+          this.showMessage('error', 'Error', 'Hubo un problema al verificar el número de teléfono.');
+        },
+      });
+    } else {
+      this.nombreDisabled = true;
+      this.apellidosDisabled = true;
+      this.telefonoDisabled = false;
+    };
+  };
+
+
+
   // HTTP de Cliente
   getCliente(): void {
-    if (this.isTelefonoValid) {
+    if (this.telefonoValid) {
       this.loading = true;
       this.clienteService.getCliente(this.telefono).subscribe({
         next: (res) => {
@@ -168,30 +183,30 @@ export default class ClienteComponent implements OnInit {
     } else {
       this.showMessage('error', 'Error', 'El número de teléfono debe tener 10 caracteres');
     }
-  }
-  agregarCliente(cliente: ClienteRequest): void {
+  };
+  agregarCliente(): void {
     if (this.isTelefonoValid) {
       this.loading = true;
-      this.clienteService.posCliente(cliente).subscribe({
+      this.clienteService.posCliente(this.nuevoCliente).subscribe({
         next: (res) => {
           if (res.exito === 1) {
-            this.cliente = res.data;
             this.showMessage('success', 'Cliente agregado', res.mensaje);
           } else {
             this.showMessage('error', 'Error', res.mensaje);
-          }
+          };
           this.loading = false;
         },
         error: (error: string) => {
           this.loading = false;
           this.showMessage('error', 'Error', error);
-        }
+        },
       });
     }
-  }
+  };
+
   // HTTP de Direccion
   getDireccion(): void {
-    if (this.isTelefonoValid) {
+    if (this.telefonoValid) {
       this.loading = true;
       this.clienteService.getDireccion(this.telefono).subscribe({
         next: (res) => {
@@ -214,8 +229,10 @@ export default class ClienteComponent implements OnInit {
     } else {
       this.showMessage('error', 'Error', 'El número de teléfono debe tener 10 caracteres numéricos');
     }
-  }
-  addDireccion(direccion: Direccion): void {
+  };
+  postDireccion(direccion: Direccion): void {
+    direccion.telefono = this.nuevoCliente.telefono;
+
     if (this.isTelefonoValid) {
       this.loading = true;
       this.clienteService.postDireccion(direccion).subscribe({
@@ -233,7 +250,32 @@ export default class ClienteComponent implements OnInit {
         }
       });
     }
-  }
+  };
+  putDireccion(): void {
+    const direccion: Direccion = {
+      idDireccion: 0,
+      calle: this.nuevaDireccion.calle,
+      colonia: this.nuevaDireccion.colonia,
+      municipio: this.nuevaDireccion.municipio,
+      numero: this.nuevaDireccion.numero,
+      estado: this.nuevaDireccion.estado,
+      cp: this.nuevaDireccion.cp,
+      telefono: '1234567890'
+    };
+    this.clienteService.putDireccion(direccion).subscribe({
+      next: (res: DireccionResponse) => {
+        if (res.exito === 1) {
+          this.showMessage('success', 'Dirección actualizada', res.mensaje);
+        } else {
+          this.showMessage('error', 'Error', res.mensaje);
+        }
+      },
+      error: (error: string) => {
+        this.showMessage('error', 'Error', error);
+      }
+    });
+  };
+
   //Http Codigo Postal
   onCpChange(): void {
     if (/^\d{5}$/.test(this.nuevaDireccion.cp)) {
@@ -260,7 +302,6 @@ export default class ClienteComponent implements OnInit {
         }
       });
     } else {
-      this.showMessage('error', 'Error', 'El código postal debe tener 5 caracteres numéricos');
       this.cpInfo = null;  // Limpiar la información si el código postal no es válido
     }
   }

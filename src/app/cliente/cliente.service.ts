@@ -54,7 +54,17 @@ export class ClienteService {
     const url= `${this.url}/direccion/agregar `;
     return this.http.post<DireccionResponse>(url, direccion, this.getHttpOptions());
   };
-  //codigo posta
+  putDireccion(direccion:Direccion):Observable<DireccionResponse>{
+    const id = localStorage.getItem('idDireccion');
+    if (!id) {
+      return new Observable<DireccionResponse>(observer => {
+        observer.error('No se encontró el ID de la dirección en el almacenamiento local');
+      });
+    }
+    const url= `${this.url}/direccion/${id}`;
+    return this.http.put<DireccionResponse>(url, direccion, this.getHttpOptions())
+  };
+  //codigo post
   getCP(cp: string): Observable<CpResponse> {
     // Validación para asegurar que el código postal tiene 5 dígitos
     if (!/^\d{5}$/.test(cp)) {
@@ -68,6 +78,6 @@ export class ClienteService {
         'APIKEY': '7b65f2b63c31d8f06709349c1f9d2092af6cfe48'  // Reemplaza con tu API key
       }
     });
-  }
+  };
 
 }

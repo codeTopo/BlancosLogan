@@ -78,11 +78,12 @@ p {
 
 //de aqui para el dialog
 
-
 .dialog-content {
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative; /* Necesario para que el z-index funcione */
+  z-index: 10000; /* Ajusta el valor según sea necesario */
 
   .section {
     padding: 1rem;
@@ -133,5 +134,55 @@ p {
     }
   }
 }
+
+.editar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 1rem; /* Espacio entre los elementos del grid */
+  height: 100%; /* Se adapta a la altura del diálogo */
+  width: 100%;  /* Se adapta al ancho del diálogo */
+  padding: 1rem; /* Espacio interno del grid */
+  box-sizing: border-box; /* Para incluir padding en el tamaño total */
+}
+
+.flex-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+
+.editDialog{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dialog-row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 10px;
+}
+
+.dialog-item {
+  width: 23%; /* Ajusta el ancho según sea necesario */
+  background-color: #f0f0f0; /* Color de fondo para visualizar los divs */
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
 
 
