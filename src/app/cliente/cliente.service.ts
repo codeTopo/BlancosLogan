@@ -5,6 +5,7 @@ import { ClienteRequest, Respons } from './ClienteRequest';
 import { Direccion, DireccionResponse } from './Direccion';
 import { CpResponse } from './CodigoPostal';
 import { response } from 'express';
+import { Terminos, TerminosResponse } from './TerminosRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,11 @@ export class ClienteService {
         'APIKEY': '7b65f2b63c31d8f06709349c1f9d2092af6cfe48'  // Reemplaza con tu API key
       }
     });
+  };
+  //terminos
+  postTerm(terminos:Terminos):Observable<TerminosResponse>{
+    const url= `${this.url}/terminos/agregar `;
+    return this.http.post<TerminosResponse>(url,terminos, this.getHttpOptions())
   };
 
 }

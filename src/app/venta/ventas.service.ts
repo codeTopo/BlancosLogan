@@ -25,6 +25,6 @@ export class VentasService {
   }
 
   addVenta(venta: VentaRequest): Observable<VentaResponse> {
-    return this.http.post<VentaResponse>(`${this.url}/ventas/agregar`, venta, this.getHttpOptions());
+    return this.http.post<VentaResponse>(`${this.url}/prepago/agregar`, venta, this.getHttpOptions());
   }
 }

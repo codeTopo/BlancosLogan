@@ -1,6 +1,6 @@
 <p-splitter [style]="{ height: '350px' }" [panelSizes]="[20, 80]" [minSizes]="[10, 0]" styleClass="mb-5">
   <ng-template pTemplate>
-    <p-splitter layout="vertical" [panelSizes]="[15, 85]">
+    <p-splitter layout="vertical" [panelSizes]="[30, 70]">
       <ng-template pTemplate>
         <div style="flex-grow: 1;" class="flex align-items-center justify-content-center">
           <p-iconField iconPosition="left">
@@ -59,13 +59,18 @@
               </ng-container>
               <ng-template #noDireccion>
                 <p>Puedes Llenar tus datos aqui</p>
-                <p-button [raised]="true" [rounded]="true" [outlined]="true" severity="warning" (click)="showDialog()" label="Mandar Datos"/>
+                <p-button [raised]="true"
+                [rounded]="true"
+                [outlined]="true"
+                [disabled]="isButtonDisabled"
+                severity="warning" (click)="showDialog()" label="Mandar Datos"/>
               </ng-template>
             </div>
           </ng-template>
         </p-splitter>
       </ng-template>
     </p-splitter>
+
   </ng-template>
 </p-splitter>
 <p-toast></p-toast>
@@ -188,12 +193,20 @@
     </div>
     <!--Boton de seleccion-->
     <div class="section section3">
-      <div class="flex-container">
-        <div class="flex-item flex-grow-1">
+      <div class="flex-container" style="align-items: center;">
+        <div class="flex align-items-center gap-1">
+          <label for="terminos" style="margin-left: 8px;">Aceptar términos y condiciones</label>
+          <p-checkbox
+            [(ngModel)]="terminosAceptados"
+            binary="true"
+            inputId="terminos"
+            [disabled]="!isFormComplete()"/>
+        </div>
+        <div class="flex-item align-items-center flex-grow-1">
           <p-button label="Agregar Datos"
                     icon="pi pi-user-plus"
                     (click)="agregarCliente(); postDireccion(nuevaDireccion)"
-                    [disabled]="loading || telefonoError"
+                    [disabled]="loading || telefonoError || !terminosAceptados"
                     [loading]="loading"
                     [raised]="true" [rounded]="true" severity="info"
                     class="p-button-success" />
@@ -202,8 +215,6 @@
     </div>
   </div>
 </p-dialog>
-
-
 <!--Dialogo de editar-->
 <p-dialog header="Editar Direccion" [(visible)]="visibleEdit" [modal]="true" [style]="{ width: '70vw', height: '30vw', 'text-align': 'center' }" [baseZIndex]="10000" [appendTo]="'body'">
   <div *ngIf="loading" class="loading-container"  >

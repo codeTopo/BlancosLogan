@@ -1,6 +1,7 @@
 export interface VentaRequest{
   idCliente:number,
   idDireccion:number;
+  email:string;
   pedido: Concepto[];
 }
 
@@ -15,11 +16,7 @@ export interface VentaResponse {
   exito: number;
   mensaje: string;
   data: {
-    venta: {
-      idVenta: number;
-      idCliente: number;
-      idDireccion: number;
-      total: number;
-    };
+    idPrePago: string;
+    urlPago: string;
   };
 }

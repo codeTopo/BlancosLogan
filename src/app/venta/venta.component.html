@@ -61,18 +61,11 @@
     </p-table>
   </div>
 
-  <p-dialog header="¡Gracias por tu compra!" [modal]="true" [(visible)]="displayDialog" [style]="{ width: '30rem' }">
+  <p-dialog header="¡Trabajando su compra por tu compra!" [modal]="true" [(visible)]="displayDialog" [style]="{ width: '30rem' }">
     <p>
-     El ID de tu venta es: <strong>{{ ventaId }}</strong>
+     El ID de preCompra es: <strong>{{ ventaId }}</strong>
     </p>
     <p-divider/>
-    <p>
-      Recuerde que este numero de venta es muy importante dado que el vendedor se lo pedira para referencia de su pedido
-    </p>
-    <p-divider/>
-      <P>Desea mandar su numero de venta por mensaje?
-      </P>
-    <p-divider/>
-    <p-button  icon="pi pi-whatsapp"  [text]="true" severity="success" (click)="openWhatsApp()"/>
+
   </p-dialog>
 </div>

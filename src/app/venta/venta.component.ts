@@ -33,7 +33,7 @@ export default class VentaComponent implements OnInit {
   concepto: Producto[] = [];
   loading: boolean = false;
   ventaDisabled= true;
-  ventaId: number | null = null;
+  ventaId: string | null = null;
   displayDialog: boolean = false;
 
   constructor(
@@ -62,7 +62,8 @@ export default class VentaComponent implements OnInit {
     }
   };
   private updateVentaDisabled(): void {
-    this.ventaDisabled = this.totalAmount < 1500;
+    //aqui hay que cambiar el monto minimo de 1500 a menor <
+    this.ventaDisabled = this.totalAmount > 1500;
   }
   get totalAmount(): number {
     return this.concepto.reduce((acc, product) => acc + product.precio * product.cantidad, 0);
@@ -77,9 +78,6 @@ export default class VentaComponent implements OnInit {
 
     window.open(url, '_blank');
   }
-
-
-
   eliminarProducto(id: number): void {
     this.concepto = this.concepto.filter(product => product.idProducto !== id);
     localStorage.setItem('concepto', JSON.stringify(this.concepto));
@@ -90,10 +88,11 @@ export default class VentaComponent implements OnInit {
     });
     this.updateVentaDisabled();
   };
-
+  //solicituud http
   agregarVenta(): void {
     const idCliente = Number(localStorage.getItem('idCliente'));
     const idDireccion = Number(localStorage.getItem('idDireccion'));
+    const email = localStorage.getItem('Email') || '';
     // Verificar si los valores se recuperaron correctamente
     if (isNaN(idCliente) || isNaN(idDireccion)) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Datos de cliente o dirección no disponibles.' });
@@ -102,7 +101,8 @@ export default class VentaComponent implements OnInit {
     }
     const ventaRequest: VentaRequest = {
       idCliente: idCliente,
-    idDireccion: idDireccion,
+      idDireccion: idDireccion,
+      email:email,
       pedido: this.concepto.map(producto => ({
         idConcepto: 0, // Asigna un valor por defecto si no lo tienes disponible
         idProducto: producto.idProducto,
@@ -114,10 +114,10 @@ export default class VentaComponent implements OnInit {
       next: (response: VentaResponse) => {
         if (response.exito === 1) {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.mensaje });
-          this.concepto = []; // Limpiar el carrito
-          localStorage.removeItem('concepto');
           this.updateVentaDisabled();
-          this.ventaId = response.data.venta.idVenta; this.displayDialog = true;
+          window.location.href = response.data.urlPago;
+          this.ventaId = response.data.idPrePago;
+          this.displayDialog = true;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.mensaje });
         }
@@ -128,6 +128,6 @@ export default class VentaComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
+  };
 
 }

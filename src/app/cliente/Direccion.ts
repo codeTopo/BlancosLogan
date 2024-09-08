@@ -5,7 +5,7 @@ export interface DireccionResponse {
 }
 
 export interface Direccion {
-  idDireccion: number;
+  idDireccion:  number  ;
   calle: string;
   colonia: string;
   municipio: string;

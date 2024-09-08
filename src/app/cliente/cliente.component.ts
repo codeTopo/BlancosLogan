@@ -17,7 +17,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CpResponse } from './CodigoPostal';
 import { DropdownModule } from 'primeng/dropdown';
-import { Observable } from 'rxjs/internal/Observable';
+import { CheckboxModule } from 'primeng/checkbox';
+import { Terminos } from './TerminosRequest';
 
 @Component({
   selector: 'app-cliente',
@@ -35,6 +36,7 @@ import { Observable } from 'rxjs/internal/Observable';
     FloatLabelModule,
     ProgressSpinnerModule,
     DropdownModule,
+    CheckboxModule,
   ],
   templateUrl: './cliente.component.html',
   styleUrls: ['./cliente.component.scss'],
@@ -54,7 +56,7 @@ export default class ClienteComponent implements OnInit {
     telefono: ''
   };
   nuevaDireccion: Direccion = {
-    idDireccion: 0,
+    idDireccion: 0 ,
     calle: '',
     colonia: '',
     municipio: '',
@@ -72,9 +74,7 @@ export default class ClienteComponent implements OnInit {
   apellidosDisabled: boolean = true;
   codigopostalDisabled:boolean=true;
   telefonoDisabled: boolean = false;
-
-
-
+  terminosAceptados: boolean = false;
   // Para el código postal
   cpInfo: CpResponse | null = null;
   coloniasDisponibles: string[] = [];
@@ -98,11 +98,21 @@ export default class ClienteComponent implements OnInit {
   };
   showDialogP(){
     this.visibleEdit = true;
+  };
+  get isButtonDisabled(): boolean {
+    const idCliente = localStorage.getItem('idCliente');
+    const idDireccion = localStorage.getItem('idDireccion');
+    const token = localStorage.getItem('Token')
+    if (!token) {
+      return true;
+    }
+    return idCliente !== null && idDireccion !== null;
   }
+
   private showMessage(severity: string, summary: string, detail: string): void {
     this.messages.clear();
     this.messages.add({ severity, summary, detail });
-  }
+  };
 
   constructor(
     private clienteService: ClienteService,
@@ -110,6 +120,19 @@ export default class ClienteComponent implements OnInit {
   ) { }
 
 
+  isFormComplete(): boolean {
+    return (
+      this.nuevoCliente.nombre.trim() !== '' &&
+      this.nuevoCliente.apellidos.trim() !== '' &&
+      this.nuevoCliente.telefono.trim() !== '' &&
+      this.nuevaDireccion.cp.trim() !== '' &&
+      this.nuevaDireccion.estado.trim() !== '' &&
+      this.nuevaDireccion.municipio.trim() !== '' &&
+      this.nuevaDireccion.colonia.trim() !== '' &&
+      this.nuevaDireccion.calle.trim() !== '' &&
+      this.nuevaDireccion.numero.trim() !== ''
+    );
+  }
 
   ngOnInit(): void { }
 
@@ -123,7 +146,7 @@ export default class ClienteComponent implements OnInit {
     const telefono = this.telefono
     return telefono.length === 10 && /^[0-9]+$/.test(telefono);
   }
-    //funcion para validar el telefono
+  //funcion para validar el telefono
   validateTelefono(): void {
     const telefono = this.nuevoCliente.telefono;
     // Verifica si el número tiene exactamente 10 dígitos antes de proceder
@@ -160,8 +183,6 @@ export default class ClienteComponent implements OnInit {
     };
   };
 
-
-
   // HTTP de Cliente
   getCliente(): void {
     if (this.telefonoValid) {
@@ -190,6 +211,8 @@ export default class ClienteComponent implements OnInit {
       this.clienteService.posCliente(this.nuevoCliente).subscribe({
         next: (res) => {
           if (res.exito === 1) {
+            localStorage.setItem('idCliente', res.data.idCliente.toString());
+            this.terminosAcept(res.data.idCliente, 'Beta.01');
             this.showMessage('success', 'Cliente agregado', res.mensaje);
           } else {
             this.showMessage('error', 'Error', res.mensaje);
@@ -203,7 +226,6 @@ export default class ClienteComponent implements OnInit {
       });
     }
   };
-
   // HTTP de Direccion
   getDireccion(): void {
     if (this.telefonoValid) {
@@ -212,10 +234,10 @@ export default class ClienteComponent implements OnInit {
         next: (res) => {
           console.log(res.data);
           if (res.exito === 1) {
-            if (res.data.length > 0) {
-              this.direc = res.data[0]; // Asignar el primer elemento de la matriz
+            if (res.data.length > 0 && res.data[0]) {
+              this.direc = res.data[0];
               this.showMessage('success', 'Datos', res.mensaje);
-              localStorage.setItem('idDireccion', res.data[0].idDireccion.toString());
+              localStorage.setItem('idDireccion', this.direc.idDireccion!.toString());
             } else {
               this.showMessage('info', 'Sin resultados', 'No se encontraron direcciones para el teléfono proporcionado.');
             }
@@ -232,13 +254,18 @@ export default class ClienteComponent implements OnInit {
   };
   postDireccion(direccion: Direccion): void {
     direccion.telefono = this.nuevoCliente.telefono;
-
     if (this.isTelefonoValid) {
       this.loading = true;
       this.clienteService.postDireccion(direccion).subscribe({
         next: (res) => {
           if (res.exito === 1) {
-            this.showMessage('success', 'Direccion Agregada', res.mensaje);
+            if (res.data.length > 0 && res.data[0]) {
+              this.direc = res.data[0];
+              localStorage.setItem('idDireccion', this.direc.idDireccion!.toString());
+              this.showMessage('success', 'Direccion Agregada', res.mensaje);
+            } else {
+              this.showMessage('info', 'Sin resultados', 'No se encontraron direcciones en la respuesta.');
+            }
           } else {
             this.showMessage('error', 'Error', res.mensaje);
           }
@@ -275,7 +302,6 @@ export default class ClienteComponent implements OnInit {
       }
     });
   };
-
   //Http Codigo Postal
   onCpChange(): void {
     if (/^\d{5}$/.test(this.nuevaDireccion.cp)) {
@@ -304,5 +330,24 @@ export default class ClienteComponent implements OnInit {
     } else {
       this.cpInfo = null;  // Limpiar la información si el código postal no es válido
     }
+  };
+  terminosAcept(idCliente: number, ArchivoVersion: string): void {
+    const terminos: Terminos = {
+      idCliente: idCliente,
+      ArchivoVersion: ArchivoVersion
+    };
+      this.clienteService.postTerm(terminos).subscribe({
+        next: (res) => {
+          if (res.exito === 1) {
+            this.showMessage('success', 'Términos Aceptados', res.mensaje);
+          } else {
+            this.showMessage('error', 'Error', res.mensaje);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.showMessage('error', 'Error', 'Hubo un problema al enviar los términos.');
+        }
+      });
   }
+
 }

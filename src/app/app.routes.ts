@@ -18,4 +18,8 @@ export const routes: Routes = [
     path:'venta',
     loadComponent:()=> import('./venta/venta.component')
   },
+  {
+    path:'retorno',
+    loadComponent:()=> import('./retorno/retorno.component')
+  }
 ];

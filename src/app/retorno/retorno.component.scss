@@ -1,0 +1,16 @@
+.full{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 100% de la altura de la ventana */
+  width: 100vw; /* 100% del ancho de la ventana */
+  background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
+
+}
+.carta{
+  width: 100%;
+  max-width: 400px; /* Ajusta el tamaño máximo del card */
+  background-color: red;
+  box-shadow: 1px 2px 3px rgba(0.8, 0.8, 0.8, 0.8);
+  border-radius: 10%;
+}

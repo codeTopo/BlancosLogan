@@ -1,7 +1,5 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import { inject } from '@angular/core';
-import { MessageService } from 'primeng/api';
 
 export const generalInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
@@ -20,7 +18,6 @@ export const generalInterceptor: HttpInterceptorFn = (req, next) => {
         errorResponse.mensaje = error.error?.mensaje || `Error del servidor: ${error.status}\nMensaje: ${error.message}`;
         errorResponse.data = error.error; // Este contiene el objeto Respuestas enviado por el servidor
       }
-
       console.error('Interceptor error:', errorResponse); // Log para verificar errores
       return throwError(() => errorResponse);
     })
