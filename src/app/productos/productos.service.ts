@@ -9,7 +9,7 @@ import { ProdRes } from './ProductoRequest';
   providedIn: 'root'
 })
 export class ProductosService {
-  private url = 'http://localhost:100/api/productos';
+  private url = 'http://localhost:100/api/productos/web';
 
   constructor(private http: HttpClient) { }
 
@@ -24,9 +24,9 @@ export class ProductosService {
         'Authorization': `Bearer ${token}`
       })
     };
-  }
+  };
 
   getProductos(): Observable<ProdRes> {
     return this.http.get<ProdRes>(this.url, this.getHttpOptions());
-  }
+  };
 }

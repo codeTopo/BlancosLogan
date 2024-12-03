@@ -17,40 +17,44 @@
     <p-toast></p-toast>
   </div>
 
-  <!-- Aquí comienza el Body -->
   <div class="body">
-    <cdk-virtual-scroll-viewport itemSize="35" class="viewport" >
-      <div *ngIf="loading" class="loading-container">
-        <p-progressSpinner></p-progressSpinner>
-        <p>Cargando...</p>
-      </div>
-      <div *ngIf="error" class="error-container">
-        <p>Ocurrió un error al cargar los productos.</p>
-        <button pButton type="button" label="Reintentar" icon="pi pi-refresh" (click)="fetchProductos()"></button>
-      </div>
-      <div class="product-grid" *ngIf="!loading && !error">
-        <div class="card-container" *cdkVirtualFor="let product of filteredProducts">
-          <div class="card flex justify-content-center" >
-            <p-card header="{{product.nombre}}">
-              <ng-template pTemplate="header">
-                <img alt="Card" src="{{product.ubicacion}}" />
-              </ng-template>
-              <p>
-                {{product.descripcion}}
-              </p>
-              <ng-template pTemplate="footer">
-                <div class="footer-content">
-                  <div class="product-price">${{product.precio}}</div>
-                  <p-button icon="pi pi-shopping-bag" severity="warning" [raised]="true" [rounded]="true" class="save-button" (click)="showDialog(product)"/>
-                </div>
-              </ng-template>
-            </p-card>
+    <ng-container *ngIf="!loading && !error; else loadingTemplate">
+      <ng-container *ngIf="filteredProducts.length > 0; else noProductsTemplate">
+        <div class="product-grid">
+          <div class="product-card" *ngFor="let product of filteredProducts">
+            <!-- Header: Imagen -->
+            <div class="card-header">
+              <img [src]="product.ubicacion" alt="{{ product.nombre }}" class="product-image">
+            </div>
+            <!-- Body: Nombre y Descripción -->
+            <div class="card-body">
+              <h4>{{ product.nombre }}</h4>
+              <p class="product-description">{{ product.descripcion }}</p>
+            </div>
+            <!-- Footer: Precio y Botón -->
+            <div class="card-footer">
+              <span class="product-price">Precio: ${{ product.precio }}</span>
+              <p-button icon="pi pi-shopping-bag" label="Seleccionar" [raised]="true" [rounded]="true" (click)="showDialog(product)" severity="warning" outlined="true"/>
+            </div>
           </div>
         </div>
+      </ng-container>
+    </ng-container>
+    <!-- Plantilla de carga -->
+    <ng-template #loadingTemplate>
+      <div class="loading-container">
+        <p-progressSpinner></p-progressSpinner>
+        <p>Cargando productos...</p>
       </div>
-    </cdk-virtual-scroll-viewport>
-
+    </ng-template>
+    <!-- Plantilla de productos no encontrados -->
+    <ng-template #noProductsTemplate>
+      <div class="error-container">
+        <p>No se encontraron productos.</p>
+      </div>
+    </ng-template>
   </div>
+
 
   <!--Aqui el cuadro de dialog-->
   <p-dialog header="Detalles del Producto" [(visible)]="displayDialog" modal="modal"  [style]="{ width: '25vw' }"  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" class="custom-dialog">

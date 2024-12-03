@@ -23,11 +23,11 @@
         <h2>Compra Mínima:</h2>
         <p><span class="icono-compra">🛍</span> <strong>La compra mínima es de $1500,</strong> pero ten en cuenta que este monto no incluye el costo de paquetería, el cual se calculará al finalizar tu pedido. <span class="icono-paquete">📦</span></p>
         <h2>Precios de Bodega:</h2>
-        <p><span class="icono-precio">💰</span> <strong>Somos revendedores a precio de bodega (mayoristas),</strong> por lo que nuestros precios son competitivos. <span class="icono-competitivo">🤑</span></p>
+        <p><span class="icono-precio">💰</span> <strong>Somos Bodega(mayoristas),</strong> por lo que nuestros precios son competitivos. <span class="icono-competitivo">🤑</span></p>
         <h2>Video de recepción: No olvides grabarlo:</h2>
         <p><span class="icono-video">📹</span> <strong>Para tu propia protección,</strong> por favor graba un vídeo al recibir tu producto. Si no lo necesitas, puedes eliminarlo para ahorrar espacio. <span class="icono-eliminar">🗑</span></p>
         <h2>Seguimiento de Pedido:</h2>
-        <p><span class="icono-seguimiento">📝</span> <strong>Después de realizar tu compra en nuestra página web,</strong>un colaborador se pondrá en contacto contigo lo más pronto posible si es dentro del horario de 9:30 am a 5:30 pm. El colaborador se identificará con su nombre, tu nombre o número de cliente, y tu ID de venta para darle seguimiento a tu pedido.<span class="icono-telefono">📞</span></p>
+        <p><span class="icono-seguimiento">📝</span> <strong>Después de realizar tu compra en nuestra página web,</strong> se te redirigirá a nuestro Bot 🤖, el cual podrá atenderte 24/7 en todo momento. Si prefieres, también puedes ser atendido por un colaborador dentro del horario <span class="icono-reloj">⏰</span> de 9:30 am a 5:30 pm.</p>
         <h3>Horario de Atención al Cliente:</h3>
         <p>
           <span class="icono-reloj">⏰</span>
@@ -41,13 +41,16 @@
     <div class="column column2">
       <div class="column2-content">
         <p-button class="link-btn" [disabled]="loginDisabled" icon="pi pi-list" label="Productos" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="goToProductos()"/>
-        <p-button class="link-btn" icon="pi pi-whatsapp" label="Requieres ayuda" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="openWhatsApp()"/>
-        <p-button class="link-btn"  [disabled]="loginDisabled" [raised]="true" [rounded]="true" [outlined]="true" severity="help">Botón 3</p-button>
+        <p-button class="link-btn" icon="pi pi-whatsapp" label="Bot Logan" [raised]="true" [rounded]="true" [outlined]="true" severity="help" (click)="openWhatsApp()"/>
       </div>
     </div>
-    <!--terminos y condiciones-->
+    <!--Carrusel-->
     <div class="column column3">
-      <p>Carrusel angular </p>
+      <p-carousel [value]="images" [numVisible]="1" [numScroll]="1" [circular]="true" [autoplayInterval]="8000">
+        <ng-template pTemplate="item" let-image>
+          <img [src]="image.imagen" alt="Imagen del carrusel" style="width: 100%; height: auto;" />
+        </ng-template>
+      </p-carousel>
     </div>
     <!--liga de los clientes-->
     <div class="column column4">
@@ -244,7 +247,11 @@
   </p-scrollPanel>
 </p-dialog>
 
-
-
+<!-- Dialog para mostrar el idPrepago -->
+<p-dialog header="Folio de venta" [(visible)]="visibleId" [modal]="true" [style]="{ width: '25rem' }">
+  <div *ngIf="ventaId">
+    <p>Folio de Venta: {{ ventaId }}</p>
+  </div>
+</p-dialog>
 
 <router-outlet></router-outlet>

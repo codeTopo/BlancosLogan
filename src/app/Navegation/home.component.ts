@@ -4,7 +4,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { Router, RouterModule } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { AuthService } from './auth.service';
 import { AuthRequest, LoginRequest, Respuestas } from './AuthRequest';
@@ -18,6 +18,8 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { CarouselModule } from 'primeng/carousel';
+import { ResCarr, Carrusel } from './AuthRequest';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -38,14 +40,18 @@ import { MessageModule } from 'primeng/message';
     AvatarModule,
     InputTextModule,
     MessageModule,
-  ],
+    CarouselModule,
+],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers:[MessageService]
+  providers:[MessageService,]
 })
 export default class HomeComponent implements OnInit {
 
 
+   images: Carrusel[] = [];
+
+  ventaId: string | undefined;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -53,12 +59,27 @@ export default class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  };
+    // Obtener el 'ventaId' desde el localStorage
+    const storedVentaId = localStorage.getItem('ventaId');
+    if (storedVentaId) {
+      console.log('Venta ID desde localStorage:', storedVentaId);
+      // Guardarlo en una variable para usarlo en el HTML
+      this.ventaId = storedVentaId;
+    } else {
+      this.ventaId = 'No hay ID de venta disponible';
+    };
 
-  onSubmit() {
+    this.authService.carrusel().subscribe((res: ResCarr) => {
+      if (res.exito === 1) {
+        this.images = res.data;
+      } else {
+        console.error('Error al obtener imágenes del carrusel');
+      }
+    }, error => {
+      console.error('Error al obtener imágenes del carrusel', error);
+    });
 
-  };
-
+  }
   // para navegar a los diferentes componentes
   goToProductos() {
     this.router.navigate(['/productos']);
@@ -81,6 +102,7 @@ export default class HomeComponent implements OnInit {
   //herramientas del dialog y animacion
   visible: boolean = false;
   visibleAdd:boolean = false;
+  visibleId:boolean = false;
   barra:boolean= false;
   loading: boolean = false;
   visibleTer:boolean = false;
@@ -138,7 +160,6 @@ export default class HomeComponent implements OnInit {
           localStorage.setItem('Email', this.Email!);
           this.visible = false;
           this.clearInputs();
-          console.log('Login successful:', res);
         }
         this.loading = false;
       },
@@ -159,7 +180,6 @@ export default class HomeComponent implements OnInit {
       next:(res: Respuestas)=>{
         if(res.exito === 1){
           this.loginWithCredentials(this.Email!, this.Password!);
-
           this.messages.add({ severity: 'success', summary: 'Exito', detail: res.mensaje });
         }
         this.loading = false;
@@ -196,10 +216,22 @@ export default class HomeComponent implements OnInit {
 
   //para el boton y mandar a whatsapp
   openWhatsApp() {
-    const phoneNumber = '3951185963'; // Reemplaza con el número de teléfono deseado
-    const message = 'Hola, tengo una consulta'; // El mensaje que deseas enviar
+    const storedVentaId = localStorage.getItem('ventaId');
+    if (storedVentaId) {
+      console.log('Venta ID desde localStorage:', storedVentaId);
+      // Guardarlo en una variable para usarlo en el HTML
+      this.ventaId = storedVentaId;
+    } else {
+      this.ventaId = 'Hola, requeriero ayuda';
+    }
+
+    const phoneNumber = '3951029107'; // Reemplaza con el número de teléfono deseado
+    const message = `mi prepago es ${this.ventaId}`; // El mensaje que deseas enviar
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
+  openPrepago(){
+    this.visibleId = true;
+  }
 
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable} from 'rxjs';
-import { AuthRequest, LoginRequest, Respuestas } from './AuthRequest';
+import { Observable} from 'rxjs';
+import { AuthRequest, LoginRequest, ResCarr, Respuestas } from './AuthRequest';
 
 
 const httpOptions = {
@@ -28,4 +28,14 @@ export class AuthService {
     const url =`${this.url}/agregar`;
     return this.http.post<Respuestas>(url, login, httpOptions);
   };
+
+  carrusel(): Observable<ResCarr>{
+    const url = `${this.url}/vista`
+    return this.http.get<ResCarr>(url, httpOptions)
+  }
+
+  isLoggedIn(): boolean {
+    // Verifica si existe el token en el localStorage
+    return !!localStorage.getItem('Token');
+  }
 }

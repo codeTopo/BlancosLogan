@@ -74,55 +74,6 @@ html, body {
       justify-content: center;
       height: 100%;
     }
-
-    .viewport {
-      width: 100%;
-      height: 100%;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 8px; /* Ajusta el espacio entre las celdas */
-      width: 100%;
-      height: 100%;
-    }
-    .card-container {
-      display: flex;
-      justify-content: center;
-      width: 350px;
-      height: 440px;
-      margin-left: 8px;
-      margin-right: 8px;
-      margin-bottom: 6px;
-    }
-
-    .card {
-      width: 100%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Añade sombra a la tarjeta */
-      border-radius: 10px; /* Bordes redondeados */
-      transition: transform 0.2s; /* Transición para hover */
-      background-color: transparent;
-      &:hover {
-        transform: scale(1.05); /* Efecto hover */
-      }
-    }
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-
-    .product-price {
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    .save-button {
-      width: auto;
-    }
-
   }
 
 
@@ -150,6 +101,77 @@ html, body {
     }
   }
 
+  .product-list {
+    padding: 10px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 280px);
+    gap: 16px;
+  }
+
+  .product-card {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    width: 280px;
+    height: 360px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.06), 0px 7px 9px rgba(0, 0, 0, 0.12), 0px 20px 25px -8px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /* Header */
+    .card-header {
+      .product-image {
+        width: 100%;
+        max-height: 160px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+    }
+
+    /* Body */
+    .card-body {
+      text-align: center;
+      padding: 10px;
+
+      h4 {
+        font-size: 1.2em;
+        margin: 0 0 5px;
+      }
+
+      .product-description {
+        font-size: 0.9em;
+        color: #666;
+        margin: 5px 0;
+        height: 60px; /* Altura fija para descripciones largas */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; /* Permite el salto de línea */
+      }
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-top: auto; /* Empuja el footer al fondo de la tarjeta */
+
+      .product-price {
+        font-weight: bold;
+        font-size: 1em;
+        color: #333;
+      }
+
+      p-button {
+        flex-shrink: 0;
+      }
+    }
+  }
 
 }
 

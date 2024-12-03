@@ -63,20 +63,14 @@ export default class VentaComponent implements OnInit {
   };
   private updateVentaDisabled(): void {
     //aqui hay que cambiar el monto minimo de 1500 a menor <
-    this.ventaDisabled = this.totalAmount > 1500;
+    this.ventaDisabled = this.totalAmount < 1500;
   }
   get totalAmount(): number {
     return this.concepto.reduce((acc, product) => acc + product.precio * product.cantidad, 0);
   };
 
   openWhatsApp() {
-    const phoneNumber = '3951185963'; // Reemplaza con el número de teléfono deseado
-    const idCliente = localStorage.getItem('idCliente') || 'Cliente'; // Recupera el ID del cliente o un valor predeterminado
-    const ventaId = this.ventaId ? this.ventaId.toString() : 'No disponible'; // Asegúrate de que el número de venta esté disponible
-    const message = `Hola! Soy ${idCliente}, mi número de venta es ${ventaId}.`; // Mensaje personalizado
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-    window.open(url, '_blank');
   }
   eliminarProducto(id: number): void {
     this.concepto = this.concepto.filter(product => product.idProducto !== id);
@@ -117,6 +111,7 @@ export default class VentaComponent implements OnInit {
           this.updateVentaDisabled();
           window.location.href = response.data.urlPago;
           this.ventaId = response.data.idPrePago;
+          localStorage.setItem('ventaId', this.ventaId);
           this.displayDialog = true;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.mensaje });
@@ -129,5 +124,21 @@ export default class VentaComponent implements OnInit {
       }
     });
   };
+
+
+  botLogan(){
+    const storedVentaId = localStorage.getItem('ventaId');
+    if (storedVentaId) {
+      console.log('Venta ID desde localStorage:', storedVentaId);
+      // Guardarlo en una variable para usarlo en el HTML
+      this.ventaId = storedVentaId;
+    } else {
+      this.ventaId = 'No hay ID de venta disponible';
+    }
+    const phoneNumber = '3951029107'; // Reemplaza con el número de teléfono deseado
+    const message = `mi folio es ${storedVentaId}`; // El mensaje que deseas enviar
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
 
 }

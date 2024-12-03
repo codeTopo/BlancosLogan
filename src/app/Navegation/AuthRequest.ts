@@ -14,3 +14,13 @@ export interface LoginRequest{
   password:string;
   confirmpassword:string;
 }
+
+export interface ResCarr{
+  exito:number;
+  mensaje:string;
+  data: Carrusel[];
+};
+
+export interface Carrusel{
+  imagen:string
+}
