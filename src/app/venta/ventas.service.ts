@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class VentasService {
-  private url = 'http://localhost:100/api';
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +24,6 @@ export class VentasService {
   }
 
   addVenta(venta: VentaRequest): Observable<VentaResponse> {
-    return this.http.post<VentaResponse>(`${this.url}/prepago/agregar`, venta, this.getHttpOptions());
+    return this.http.post<VentaResponse>(`/prepago/agregar`, venta, this.getHttpOptions());
   }
 }

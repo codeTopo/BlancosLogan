@@ -4,16 +4,13 @@ import { Observable } from 'rxjs';
 import { ClienteRequest, Respons } from './ClienteRequest';
 import { Direccion, DireccionResponse } from './Direccion';
 import { CpResponse } from './CodigoPostal';
-import { response } from 'express';
 import { Terminos, TerminosResponse } from './TerminosRequest';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-
-  private url = 'http://localhost:100/api';
-
 
   constructor(private http: HttpClient) { }
 
@@ -36,24 +33,21 @@ export class ClienteService {
     if (!/^\d{10}$/.test(telefono)) {
       throw new Error('El número de teléfono debe tener 10 caracteres numéricos');
     }
-    const url = `${this.url}/clientes/${telefono}`;
+    const url = `/clientes/${telefono}`;
     return this.http.get<Respons>(url, this.getHttpOptions());
   };
   posCliente(cliente:ClienteRequest):Observable<Respons>{
-    const url = `${this.url}/clientes/agregar`;
-    return this.http.post<Respons>(url, cliente, this.getHttpOptions());
+    return this.http.post<Respons>('/clientes/agregar', cliente, this.getHttpOptions());
   };
   //direccion
   getDireccion(telefono: string): Observable<DireccionResponse> {
     if (!/^\d{10}$/.test(telefono)) {
       throw new Error('El número de teléfono debe tener 10 caracteres numéricos');
     }
-    const url = `${this.url}/direccion/${telefono}`;
-    return this.http.get<DireccionResponse>(url, this.getHttpOptions());
+    return this.http.get<DireccionResponse>(`/direccion/${telefono}`, this.getHttpOptions());
   };
   postDireccion(direccion:Direccion):Observable<DireccionResponse>{
-    const url= `${this.url}/direccion/agregar `;
-    return this.http.post<DireccionResponse>(url, direccion, this.getHttpOptions());
+    return this.http.post<DireccionResponse>('/direccion/agregar', direccion, this.getHttpOptions());
   };
   putDireccion(direccion:Direccion):Observable<DireccionResponse>{
     const id = localStorage.getItem('idDireccion');
@@ -62,8 +56,7 @@ export class ClienteService {
         observer.error('No se encontró el ID de la dirección en el almacenamiento local');
       });
     }
-    const url= `${this.url}/direccion/${id}`;
-    return this.http.put<DireccionResponse>(url, direccion, this.getHttpOptions())
+    return this.http.put<DireccionResponse>( `/direccion/${id}`, direccion, this.getHttpOptions())
   };
   //codigo post
   getCP(cp: string): Observable<CpResponse> {
@@ -71,19 +64,15 @@ export class ClienteService {
     if (!/^\d{5}$/.test(cp)) {
       throw new Error('El código postal tiene que tener 5 caracteres numéricos');
     }
-    // URL fija según la documentación
-    const url = `api?cp=${cp}`;
-    // Hacer la solicitud GET, enviando el código postal como parámetro
-    return this.http.get<CpResponse>(url, {
+    return this.http.get<CpResponse>(`/api?cp=${cp}`, {
       headers: {
-        'APIKEY': '7b65f2b63c31d8f06709349c1f9d2092af6cfe48'  // Reemplaza con tu API key
+        'APIKEY': environment.apiKeyCp
       }
     });
   };
   //terminos
   postTerm(terminos:Terminos):Observable<TerminosResponse>{
-    const url= `${this.url}/terminos/agregar `;
-    return this.http.post<TerminosResponse>(url,terminos, this.getHttpOptions())
+    return this.http.post<TerminosResponse>('/terminos/agregar',terminos, this.getHttpOptions())
   };
 
 }

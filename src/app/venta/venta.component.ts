@@ -35,6 +35,8 @@ export default class VentaComponent implements OnInit {
   ventaDisabled= true;
   ventaId: string | null = null;
   displayDialog: boolean = false;
+  mercadoPago: any;
+
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -109,7 +111,12 @@ export default class VentaComponent implements OnInit {
         if (response.exito === 1) {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.mensaje });
           this.updateVentaDisabled();
-          window.location.href = response.data.urlPago;
+          const paymentUrl = response.data.urlPago;
+          if (paymentUrl) {
+            window.location.href = paymentUrl;
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo obtener la URL de pago.' });
+          }
           this.ventaId = response.data.idPrePago;
           localStorage.setItem('ventaId', this.ventaId);
           this.displayDialog = true;
@@ -128,6 +135,8 @@ export default class VentaComponent implements OnInit {
 
   botLogan(){
     const storedVentaId = localStorage.getItem('ventaId');
+    localStorage.removeItem('concepto');
+    this.router.navigate(['/home']);
     if (storedVentaId) {
       console.log('Venta ID desde localStorage:', storedVentaId);
       // Guardarlo en una variable para usarlo en el HTML

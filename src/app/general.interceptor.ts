@@ -1,8 +1,21 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '../environments/environment';
+
 
 export const generalInterceptor: HttpInterceptorFn = (req, next) => {
-  return next(req).pipe(
+  let modifiedUrl = req.url;
+
+  // Verificar si la URL ya comienza con 'http' o '/api'
+  if (!req.url.startsWith('http') && !req.url.startsWith('/api')) {
+    modifiedUrl = `${environment.apiUrl}${req.url}`; // Concatenar la URL base solo si es necesario
+  }
+
+  const modifiedReq = req.clone({
+    url: modifiedUrl
+  });
+
+  return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
       let errorResponse = {
         exito: 0,
@@ -11,14 +24,13 @@ export const generalInterceptor: HttpInterceptorFn = (req, next) => {
       };
 
       if (error.error instanceof ErrorEvent) {
-        // Error del lado del cliente
         errorResponse.mensaje = `Error del cliente: ${error.error.message}`;
       } else {
-        // Error del lado del servidor
         errorResponse.mensaje = error.error?.mensaje || `Error del servidor: ${error.status}\nMensaje: ${error.message}`;
-        errorResponse.data = error.error; // Este contiene el objeto Respuestas enviado por el servidor
+        errorResponse.data = error.error;
       }
-      console.error('Interceptor error:', errorResponse); // Log para verificar errores
+
+      console.error('Interceptor error:', errorResponse);
       return throwError(() => errorResponse);
     })
   );
