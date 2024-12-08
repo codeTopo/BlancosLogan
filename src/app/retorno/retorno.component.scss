@@ -3,14 +3,20 @@
   justify-content: center;
   align-items: center;
   height: 100vh; /* 100% de la altura de la ventana */
-  width: 100vw; /* 100% del ancho de la ventana */
-  background: linear-gradient(83deg, #efeae6 0%, #b1b1a9 100%);
-
+  width: 100%; /* 100% del ancho de la ventana */
+  background: linear-gradient(83deg, #dab394 0%, #c1cfc0 100%);
+  box-sizing: border-box;
 }
-.carta{
-  width: 100%;
-  max-width: 400px; /* Ajusta el tamaño máximo del card */
-  background-color: red;
-  box-shadow: 1px 2px 3px rgba(0.8, 0.8, 0.8, 0.8);
-  border-radius: 10%;
+.carta {
+  width: 60%; /* Ancho adaptable al tamaño de la pantalla */
+  max-width: 800px; /* Máximo ancho de la carta */
+  padding: 1.5rem; /* Espaciado interno */
+  box-shadow: 16px 32px 40px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  background-color: #fff; /* Fondo blanco para la carta */
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+.link-btn {
+  display: block;
+  margin: 1rem auto 0; /* Centra el botón y agrega espaciado */
 }

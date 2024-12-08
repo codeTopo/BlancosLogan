@@ -1,1 +1,0 @@
-declare var MercadoPago: any;

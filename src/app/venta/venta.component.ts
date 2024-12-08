@@ -34,7 +34,7 @@ export default class VentaComponent implements OnInit {
   loading: boolean = false;
   ventaDisabled= true;
   ventaId: string | null = null;
-  displayDialog: boolean = false;
+  //displayDialog: boolean = false;
   mercadoPago: any;
 
 
@@ -71,9 +71,6 @@ export default class VentaComponent implements OnInit {
     return this.concepto.reduce((acc, product) => acc + product.precio * product.cantidad, 0);
   };
 
-  openWhatsApp() {
-
-  }
   eliminarProducto(id: number): void {
     this.concepto = this.concepto.filter(product => product.idProducto !== id);
     localStorage.setItem('concepto', JSON.stringify(this.concepto));
@@ -119,7 +116,7 @@ export default class VentaComponent implements OnInit {
           }
           this.ventaId = response.data.idPrePago;
           localStorage.setItem('ventaId', this.ventaId);
-          this.displayDialog = true;
+          // este es para ver el flujo de mandarlo a retorno... this.displayDialog = true;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.mensaje });
         }
@@ -131,23 +128,4 @@ export default class VentaComponent implements OnInit {
       }
     });
   };
-
-
-  botLogan(){
-    const storedVentaId = localStorage.getItem('ventaId');
-    localStorage.removeItem('concepto');
-    this.router.navigate(['/home']);
-    if (storedVentaId) {
-      console.log('Venta ID desde localStorage:', storedVentaId);
-      // Guardarlo en una variable para usarlo en el HTML
-      this.ventaId = storedVentaId;
-    } else {
-      this.ventaId = 'No hay ID de venta disponible';
-    }
-    const phoneNumber = '3951029107'; // Reemplaza con el número de teléfono deseado
-    const message = `mi folio es ${storedVentaId}`; // El mensaje que deseas enviar
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  }
-
 }

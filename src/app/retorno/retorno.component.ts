@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -11,6 +13,7 @@ import { CardModule } from 'primeng/card';
   [
     CardModule,
     ButtonModule,
+    DividerModule,
   ],
   templateUrl: './retorno.component.html',
   styleUrl: './retorno.component.scss'
@@ -18,6 +21,7 @@ import { CardModule } from 'primeng/card';
 export default class RetornoComponent {
 
   message: string = '';
+  ventaId: string | null = null;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
@@ -25,7 +29,6 @@ export default class RetornoComponent {
     // Lee el parámetro 'status' de la URL
     this.route.queryParams.subscribe(params => {
       const status = params['status'];
-
       switch (status) {
         case 'success':
           this.message = '¡La transacción fue exitosa!';
@@ -44,13 +47,23 @@ export default class RetornoComponent {
     });
   };
 
-  goHome() {
-    this.router.navigate(['/home']);
-  };
-
   clearCart() {
-    // Limpiar el carrito y eliminar el concepto del local storage
     localStorage.removeItem('concepto');
-    console.log('Carrito limpiado y concepto eliminado del local storage.');
+  }
+
+  botLogan(){
+    const storedVentaId = localStorage.getItem('ventaId');
+    localStorage.removeItem('concepto');
+    this.router.navigate(['/home']);
+    this.clearCart();
+    if (storedVentaId) {
+      this.ventaId = storedVentaId;
+    } else {
+      this.ventaId = 'No hay ID de venta disponible';
+    }
+    const phoneNumber = environment.telefonoBot;
+    const message = `mi folio es ${storedVentaId}`;
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   }
 }
