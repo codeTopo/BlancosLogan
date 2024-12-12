@@ -22,6 +22,10 @@ export default class RetornoComponent {
 
   message: string = '';
   ventaId: string | null = null;
+  collectionId: string | undefined;
+  paymentId: string | undefined;
+
+
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
@@ -30,8 +34,8 @@ export default class RetornoComponent {
     this.route.queryParams.subscribe(params => {
       const status = params['status'];
       console.log(params);
-      const collectionId = params['collection_id'];
-      const paymentId = params['payment_id'];
+      this.collectionId = params['collection_id'];
+      this.paymentId = params['payment_id'];
 
       switch (status) {
         case 'success':
