@@ -22,8 +22,8 @@ export default class RetornoComponent {
 
   message: string = '';
   ventaId: string | null = null;
-  @Input() collectionId: string | undefined;
-  @Input() paymentId: string | undefined;
+  collectionId: string | undefined;
+  paymentId: string | undefined;
 
 
 

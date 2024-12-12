@@ -19,7 +19,7 @@ export const routes: Routes = [
     path:'venta',
     loadComponent:()=> import('./venta/venta.component'),
   },
-  { path: 'retorno/:collection_id/:payment_id',
+  { path: 'retorno',
     loadComponent: () => import('./retorno/retorno.component')
   }
 
