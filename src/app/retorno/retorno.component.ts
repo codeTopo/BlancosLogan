@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -22,8 +22,8 @@ export default class RetornoComponent {
 
   message: string = '';
   ventaId: string | null = null;
-  collectionId: string | undefined;
-  paymentId: string | undefined;
+  @Input() collectionId: string | undefined;
+  @Input() paymentId: string | undefined;
 
 
 
