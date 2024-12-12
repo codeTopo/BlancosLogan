@@ -20,6 +20,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { Subscription } from 'rxjs';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'app-productos',
   standalone: true,
@@ -49,7 +51,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 })
 export default class ProductosComponent  implements OnInit , OnDestroy {
 
-
+  environment = environment;
   title = 'Productos'
   products: Producto[] = [];
   filteredProducts: Producto[] = [];

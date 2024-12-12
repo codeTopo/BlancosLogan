@@ -20,6 +20,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { CarouselModule } from 'primeng/carousel';
 import { ResCarr, Carrusel } from './AuthRequest';
+import { environment } from '../../environments/environment';
+
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -48,8 +51,8 @@ import { ResCarr, Carrusel } from './AuthRequest';
 })
 export default class HomeComponent implements OnInit {
 
-
-   images: Carrusel[] = [];
+  environment = environment;
+  images: Carrusel[] = [];
 
   ventaId: string | undefined;
   constructor(

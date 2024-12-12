@@ -10,7 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
-
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-venta',
@@ -30,6 +30,7 @@ import { DividerModule } from 'primeng/divider';
   providers: [MessageService]
 })
 export default class VentaComponent implements OnInit {
+  environment = environment;
   concepto: Producto[] = [];
   loading: boolean = false;
   ventaDisabled= true;
