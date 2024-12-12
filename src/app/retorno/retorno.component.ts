@@ -29,6 +29,10 @@ export default class RetornoComponent {
     // Lee el parámetro 'status' de la URL
     this.route.queryParams.subscribe(params => {
       const status = params['status'];
+      console.log(params);
+      const collectionId = params['collection_id'];
+      const paymentId = params['payment_id'];
+
       switch (status) {
         case 'success':
           this.message = '¡La transacción fue exitosa!';
