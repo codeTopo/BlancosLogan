@@ -60,7 +60,6 @@ export class ClienteService {
   };
   //codigo post
   getCP(cp: string): Observable<CpResponse> {
-    // Validación para asegurar que el código postal tiene 5 dígitos
     if (!/^\d{5}$/.test(cp)) {
       throw new Error('El código postal tiene que tener 5 caracteres numéricos');
     }
