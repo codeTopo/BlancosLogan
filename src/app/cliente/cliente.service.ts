@@ -59,8 +59,13 @@ export class ClienteService {
     return this.http.put<DireccionResponse>( `/direccion/${id}`, direccion, this.getHttpOptions())
   };
   //codigo post
-
-
+  getCP(cp: string): Observable<CpResponse> {
+    if (!/^\d{5}$/.test(cp)) {
+      throw new Error('El código postal tiene que tener 5 caracteres numéricos');
+    }
+    const apiUrl = `/api/webhook/${cp}`;
+    return this.http.get<CpResponse>(apiUrl, this.getHttpOptions());
+  }
   //terminos
   postTerm(terminos:Terminos):Observable<TerminosResponse>{
     return this.http.post<TerminosResponse>('/terminos/agregar',terminos, this.getHttpOptions())
