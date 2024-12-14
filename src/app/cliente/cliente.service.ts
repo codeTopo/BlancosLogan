@@ -5,7 +5,6 @@ import { ClienteRequest, Respons } from './ClienteRequest';
 import { Direccion, DireccionResponse } from './Direccion';
 import { CpResponse } from './CodigoPostal';
 import { Terminos, TerminosResponse } from './TerminosRequest';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

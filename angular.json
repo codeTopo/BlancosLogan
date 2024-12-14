@@ -75,8 +75,7 @@
               "buildTarget": "BlancosLogan:build:production"
             },
             "development": {
-              "buildTarget": "BlancosLogan:build:development",
-               "proxyConfig": "proxy.conf.json"
+              "buildTarget": "BlancosLogan:build:development"
             }
           },
           "defaultConfiguration": "development"
