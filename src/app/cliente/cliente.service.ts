@@ -63,7 +63,7 @@ export class ClienteService {
     if (!/^\d{5}$/.test(cp)) {
       throw new Error('El código postal tiene que tener 5 caracteres numéricos');
     }
-    const apiUrl = `/api/webhook/${cp}`;
+    const apiUrl = `/webhook/cp?cp=${cp}`;
     return this.http.get<CpResponse>(apiUrl, this.getHttpOptions());
   }
   //terminos
