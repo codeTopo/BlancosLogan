@@ -19,6 +19,7 @@ import { CpResponse } from './CodigoPostal';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Terminos } from './TerminosRequest';
+import { CodipoPostalService } from './codipo-postal.service';
 
 @Component({
   selector: 'app-cliente',
@@ -117,6 +118,7 @@ export default class ClienteComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private messages: MessageService,
+    private CodigoPostal : CodipoPostalService,
   ) { }
 
 
@@ -306,7 +308,7 @@ export default class ClienteComponent implements OnInit {
   onCpChange(): void {
     if (/^\d{5}$/.test(this.nuevaDireccion.cp)) {
       this.loading = true;
-      this.clienteService.getCP(this.nuevaDireccion.cp).subscribe({
+      this.CodigoPostal.getCP(this.nuevaDireccion.cp).subscribe({
         next: (res) => {
           console.log(res.codigo_postal)
           if (!res.error) {

@@ -59,18 +59,7 @@ export class ClienteService {
     return this.http.put<DireccionResponse>( `/direccion/${id}`, direccion, this.getHttpOptions())
   };
   //codigo post
-  getCP(cp: string): Observable<CpResponse> {
-    if (!/^\d{5}$/.test(cp)) {
-      throw new Error('El código postal tiene que tener 5 caracteres numéricos');
-    }
-    // URL directa hacia el servicio
-    const apiUrl = `https://api.tau.com.mx/dipomex/v1/codigo_postal?cp=${cp}`;
-    return this.http.get<CpResponse>(apiUrl, {
-      headers: {
-        'APIKEY': environment.apiKeyCp
-      }
-    });
-  }
+
 
   //terminos
   postTerm(terminos:Terminos):Observable<TerminosResponse>{
